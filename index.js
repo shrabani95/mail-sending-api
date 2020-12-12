@@ -8,6 +8,10 @@ app.use( bodyParser.json())
 
 const port = 3000
 
+app.get('/' , async function (req,res,next) {
+	 res.status(201).send({status: 'OK', result:'get method'});
+})
+
 app.post('/sendmail' , async function (req,res,next) {
     
 
