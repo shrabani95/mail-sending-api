@@ -26,7 +26,7 @@ const transporter = nodemailer.createTransport({
       const mailOptions = { 
         from: 'info@londongpclinic.co.uk',
         to: data.to, 
-       subject: 'info@londongpclinic.co.uk | New Contact Request from '+data.name,
+       subject: 'londongpclinic.co.uk | New Contact Request from '+data.name,
         html : mailContent,
 
       };   
