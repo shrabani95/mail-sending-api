@@ -24,9 +24,9 @@ const transporter = nodemailer.createTransport({
  var mailContent = '<!DOCTYPE HTML><head><meta http-equiv="content-type" content="text/html"></head><body><div id="outer" style="width: 80%;margin: 0 auto;margin-top: 10px;"><div id="inner" style="width: 78%;margin: 0 auto;background-color: #fff;font-family: Open Sans,Arial,sans-serif;font-size: 13px;font-weight: normal;line-height: 1.4em;color: #444;margin-top: 10px;"><p>Name : '+
   data.name+'</p><p>Email: ' + data.email+'</p><p>Phone: ' + data.phone+'</p><p>Subject: ' + data.subject +' </p><p>Message : ' + data.message+'</p></div></div></body>';
       const mailOptions = { 
-        from: 'shrabanis8@gmail.com',
+        from: 'info@londongpclinic.co.uk',
         to: data.to, 
-       subject: 'Contact Form',
+       subject: 'info@londongpclinic.co.uk | New Contact Request from '+data.name,
         html : mailContent,
 
       };   
