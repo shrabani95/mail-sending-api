@@ -2,6 +2,7 @@ const nodemailer = require('nodemailer');
 var bodyParser = require('body-parser')
 var express = require('express')
 var app = express()
+require('dotenv').config();
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use( bodyParser.json())
 
@@ -16,8 +17,8 @@ const data = req.body; // get the json object sent by the client
 const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: 'shrabanis8@gmail.com',
-          pass: 'oagurmmdihqobqsq' // naturally, replace both with your real credentials or an application-specific password
+          user: process.env.smtp_user,
+          pass: process.env.smtp_password // naturally, replace both with your real credentials or an application-specific password
         }
       });   
 
