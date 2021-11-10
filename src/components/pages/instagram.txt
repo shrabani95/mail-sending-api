@@ -1,0 +1,32 @@
+https://api.instagram.com/oauth/authorize/?client_id=138441281583659&redirect_uri=https://www.velectico.com/&&scope=user_profile,user_media&response_type=code
+
+
+
+https://www.velectico.com/?code=AQDCVeBE6HqveoymZUTsofs0W5ZtE_qrl701P6TmwlRHLTm7mqi6vHaqGVINNOmwPJjEtysOu3L_futat3oSJTloR2p8SbZEr5V7EWw8CsFpAatTTGfmOfcD5wgHnk9FOp6yMXh3dcBRFx93AGlBy9piWvsYrveiJw8DSt9XBkpvQPjIfMu_lJD91_s11an6xo3E7PDSznHAC9_j4YjmQ8ute7O2hJKabrX1euAy2t4jfg#_
+
+
+//node bakend code
+after redirecting 
+get user detials by 
+router
+.get("/", (req, res) => {
+  if (req.query.code !== 'undefined') {
+    axios.post('https://api.instagram.com/oauth/access_token', querystring.stringify({
+      'client_id': '138441281583659',
+      'client_secret': '203ab673c2987c624491f0a4ed08ba3a',
+      'grant_type': 'authorization_code',
+      'redirect_uri': process.env.BASE_URL+'me',
+      'code': req.query.code
+    }))
+    .then(response => {
+      console.log(response.data)
+      	// {
+		// 	"access_token": "IGQVJ...",
+		// 	"user_id": 17841405793187218
+		//   }
+    })
+    .catch(error => {
+      console.log(error)
+    })
+  }
+})

@@ -1,0 +1,17 @@
+POST https://velectico.net.in/admin/forgotPassword HTTP/1.1
+Content-Type: application/json
+
+{
+    "flag":"sdfsfsf"
+
+} 
+###
+
+POST https://velectico.net.in/admin/rateLimit HTTP/1.1
+Content-Type: application/json
+
+{
+    "flag":"asdaewemnxzvcxewuhwiwoll;gdgdgldgdgmmbjdjfgdg"
+}
+###
+GET https://velectico.net.in/admin/ping HTTP/1.1

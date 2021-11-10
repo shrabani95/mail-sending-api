@@ -1,0 +1,27 @@
+
+//unique views for a year
+Select COUNT(*) uniqueViews FROM(   select vm.IP,vm.Create_Date,vm.JM_Profile_Url,SUM(vm.JM_Views) viewCount from view_master vm where vm.JM_ID="+req.body.JM_ID+"  and YEAR(vm.Create_Date) GROUP BY DATE(vm.Create_Date),vm.IP  ) A
+//30days
+
+  Select COUNT(*) uniqueViews FROM(   select vm.IP,vm.Create_Date,vm.JM_Profile_Url,SUM(vm.JM_Views) viewCount
+from view_master vm where vm.JM_ID="+req.body.JM_ID+"  and DATE(vm.Create_Date) >= CURDATE() - INTERVAL 30 DAY
+GROUP BY DATE(vm.Create_Date),vm.IP
+  ) A
+
+  //7days
+
+  Select COUNT(*) uniqueViews FROM( 
+  select vm.IP,vm.Create_Date,vm.JM_Profile_Url,SUM(vm.JM_Views) viewCount
+    from view_master vm where vm.JM_ID="+req.body.JM_ID+"  and DATE(vm.Create_Date) >= CURDATE() - INTERVAL 7 DAY
+    GROUP BY DATE(vm.Create_Date),vm.IP
+  ) A
+
+
+//daily
+
+Select COUNT(*) uniqueViews FROM( 
+  select vm.IP,vm.Create_Date,vm.JM_Profile_Url,SUM(vm.JM_Views) viewCount
+from view_master vm where vm.JM_ID="+req.body.JM_ID+"  and vm.Create_Date >=  DATE_ADD(NOW(), INTERVAL -24 HOUR) 
+GROUP BY DATE(vm.Create_Date),vm.IP
+  ) A
+

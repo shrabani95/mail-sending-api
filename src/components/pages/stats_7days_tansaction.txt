@@ -1,0 +1,31 @@
+
+
+Select Y.Stat_day Lebels,IFNULL(Z.Stat_ID,0) Stat_ID,IFNULL(Z.JM_ID,0) JM_ID,IFNULL(Z.TotTran,0) TotTran,IFNULL(Z.Title,'NA') Title,Y.Create_Date  
+ from ( 
+                 Select DAYNAME(CURDATE() - INTERVAL 6 DAY) Stat_day,(CURDATE() - INTERVAL 6 DAY) Create_Date 
+                union    Select DAYNAME(CURDATE() - INTERVAL 5 DAY) Stat_day,(CURDATE() - INTERVAL 5 DAY) Create_Date  
+                union    Select DAYNAME(CURDATE() - INTERVAL 4 DAY) Stat_day,(CURDATE() - INTERVAL 4 DAY) Create_Date 
+                union    Select DAYNAME(CURDATE() - INTERVAL 3 DAY) Stat_day,(CURDATE() - INTERVAL 3 DAY) Create_Date  
+                union    Select DAYNAME(CURDATE() - INTERVAL 2 DAY) Stat_day,(CURDATE() - INTERVAL 2 DAY) Create_Date    
+                union    Select DAYNAME(CURDATE() - INTERVAL 1 DAY) Stat_day,(CURDATE() - INTERVAL 1 DAY) Create_Date        
+                union    Select DAYNAME(CURDATE()) Stat_day,CURDATE()  Create_Date 
+
+          ) Y  
+          
+          left outer join( 
+                   Select  m.Stat_ID,SUM(m.TotTran) TotTran,
+                        m.Stat_day,m.Create_Date, m.JM_ID,
+                        m.Title from (
+                         SELECT bm.DA_ID Stat_ID,COUNT(*) TotTran,
+                        DAYNAME(bm.BM_Purchase_Date) Stat_day,DATE(bm.BM_Purchase_Date) as  Create_Date, jm.JM_ID,
+                        'Transaction' Title FROM buyers_master bm    
+                        inner join direct_access_master_user da on da.DA_ID=bm.DA_ID 
+                        inner join joining_master jm on jm.JM_ID=da.JM_ID 
+                        where jm.JM_ID=187 and DATE(bm.BM_Purchase_Date) >= CURDATE() - INTERVAL 7 DAY
+                        group by DATE(bm.BM_Purchase_Date),bm.DA_ID
+                     ) as m  group by m.Create_Date
+          ) Z on Z.Create_Date=Y.Create_Date Order by Y.Create_Date;
+
+//done
+
+

@@ -1,0 +1,26 @@
+ SELECT Y.Create_Date Lebels,IFNULL(Z.Stat_ID,0) Stat_ID,IFNULL(Z.JM_ID,0) JM_ID,IFNULL(Z.TotTran,0) TotTran,IFNULL(Z.Title,'NA') Title,Y.Create_Date  from ( 
+          select Create_Date  from  
+                  (
+                      select adddate('1970-01-01',t4*10000 + t3*1000 + t2*100 + t1*10 + t0) Create_Date from 
+                      (
+                          select 0 t0 union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t0, 
+                          (select 0 t1 union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t1, 
+                          (select 0 t2 union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t2,
+                          (select 0 t3 union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t3,
+                          (select 0 t4 union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t4
+            ) v 
+             where Create_Date between CURDATE() - INTERVAL 30 DAY  and  CURDATE() 
+        
+          ) Y  left outer join( 
+                   Select  m.Stat_ID,SUM(m.TotTran) TotTran,
+                        m.Stat_day,m.Create_Date, m.JM_ID,
+                        m.Title from (
+                         SELECT bm.DA_ID Stat_ID,COUNT(*) TotTran,
+                        DAYNAME(bm.BM_Purchase_Date) Stat_day,DATE(bm.BM_Purchase_Date) as  Create_Date, jm.JM_ID,
+                        'Transaction' Title FROM buyers_master bm    
+                        inner join direct_access_master_user da on da.DA_ID=bm.DA_ID 
+                        inner join joining_master jm on jm.JM_ID=da.JM_ID 
+                        where jm.JM_ID="+req.body.JM_ID+" and DATE(bm.BM_Purchase_Date) >= CURDATE() - INTERVAL 30 DAY
+                        group by DATE(bm.BM_Purchase_Date),bm.DA_ID
+                     ) as m  group by m.Create_Date
+          ) Z on Z.Create_Date=Y.Create_Date Order by Y.Create_Date;

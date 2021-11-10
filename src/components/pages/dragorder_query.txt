@@ -1,0 +1,97 @@
+
+BEGIN
+Select * from (
+Select 'premium' ItemType,
+ dam.DA_ID tableId,
+ dam.DA_DA_ID prodId,
+ dam.DA_Type as prodType,
+ dam.JM_ID JM_ID,
+ dam.DA_Cover cover,
+'' image,
+'' icon,
+dam.DA_Title title,
+dam.DA_Description description,
+dam.DA_Price price,
+dam.DA_Active activeInactive,
+dam.DA_Collection collection,
+dam.Archive archive,
+dam.Create_Date Create_Date
+from direct_access_master_user dam
+inner join joining_master jm on jm.JM_ID=dam.JM_ID where dam.Archive=0 and jm.JM_ID=JM_ID
+
+union 
+
+SELECT 'customlink' ItemType,
+lm.LM_ID tableId,
+0 prodId,
+'link' as prodType,
+lm.JM_ID JM_ID,
+'' cover,
+lm.LM_Image image,
+lm.LM_Icon icon, 
+
+lm.LM_Title title,
+'' description, 
+0 price,
+lm.LM_Active activeInactive,
+'' collection,
+0 archive,
+lm.Create_Date Create_Date
+from link_master lm
+inner join joining_master jm on jm.JM_ID=lm.JM_ID 
+where  jm.JM_ID=JM_ID
+
+union
+
+Select 'embedcontent' ItemType,
+ ec.EC_ID tableId,
+ 0 prodId,
+ 'embed' as prodType,
+ ec.JM_ID JM_ID,
+ '' cover,
+ec.LM_Image image,
+ec.LM_Icon icon,
+
+ec.LM_Title title,
+'' description, 
+0 price,
+ec.LM_Active activeInactive,
+'' collection,
+0 archive,
+ec.Create_Date Create_Date
+from embed_content ec
+inner join joining_master jm on jm.JM_ID=ec.JM_ID where jm.JM_ID=JM_ID
+
+union 
+
+SELECT 'category' ItemType,
+cm.CM_ID tableId,
+0 prodId,
+'category' as prodType,
+cm.JM_ID JM_ID,
+'' cover,
+cm.CM_Folder_Back_Image image,
+cm.CM_Icon icon, 
+cm.CM_Folder_Title title,
+cm.CM_Folder_Sub_Title description, 
+0 price,
+cm.CM_Active_Status	 activeInactive,
+'' collection,
+0 archive,
+cm.Create_Date Create_Date
+from category_master cm
+inner join joining_master jm on jm.JM_ID=cm.JM_ID 
+where  jm.JM_ID=JM_ID
+) X order by X.Create_Date
+END
+
+//call sp in node js
+
+connection.query("call procedure_name(?,?)", [param1, param2], function (err, result) {
+    if (err) {
+        console.log("err:", err);
+    } else {
+        console.log("results:", result);
+    }
+
+});

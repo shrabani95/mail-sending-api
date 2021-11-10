@@ -1,0 +1,702 @@
+
+        //monday=========================================================================
+        let mon_start_time = document.getElementsByName('mon_start')[0].value;
+        let mon_end_time = document.getElementsByName('mon_end')[0].value;
+        let mon_start_time2 = document.getElementsByName('mon_start2')[0].value;
+        let mon_end_time2 = document.getElementsByName('mon_end2')[0].value;
+        let mon_start = 0;
+        let mon_end = 0;
+        let mon_start2 = 0;
+        let mon_end2 = 0;
+        if (mon_checked === true) {
+            if (
+                (
+                    (mon_start_time.length === 0 && mon_end_time.length === 0) || //1st
+                    (mon_start_time.length === 0 || mon_end_time.length === 0)
+                ) &&
+                ((mon_start_time2.length === 0 && mon_end_time2.length === 0) || //2nd
+                    (mon_start_time2.length === 0 || mon_end_time2.length === 0)
+                )
+            ) {
+                document.getElementById('msg_live').innerHTML = '* Select atleast one schedule for monday';
+                return false;
+            }
+        }
+        var msg_tue="The time schedule for Monday is incorrect. Please check and correct"; //
+        if (mon_checked === true && (
+            (mon_start_time.length > 0 && mon_end_time.length > 0) ||
+            (mon_start_time2.length > 0 && mon_end_time2.length > 0))
+        ) {
+            mon_start = this.time_convert_number(mon_start_time);
+            mon_end = this.time_convert_number(mon_end_time);
+            mon_start2 = this.time_convert_number(mon_start_time2);
+            mon_end2 = this.time_convert_number(mon_end_time2);
+            if (mon_start > 0 && mon_start > 0 && mon_start2 > 0 && mon_end2 > 0) {
+                if ((mon_start > mon_end || mon_start === mon_end)
+                    || (mon_start2 > mon_end2 || mon_start2 === mon_end2)
+                    || (mon_start2 === mon_start || mon_end === mon_end2)
+                ) {
+                    alert(msg_tue);
+                    return false;
+                }
+                let A = API.inRange(mon_start, mon_start2, mon_end2);
+                let B = API.inRange(mon_end, mon_start2, mon_end2);
+                let C = API.inRange(mon_start2, mon_start, mon_end);
+                let D = API.inRange(mon_end2, mon_start, mon_end);
+
+
+                if (A === true || B === true || C === true || D === true) {
+                    alert(msg_tue);
+                    return false;
+                }
+            }
+            else if (mon_start > 0 && mon_end > 0 && mon_start2 === 0 && mon_end2 === 0) {
+                if ((mon_start > mon_end || mon_start === mon_end)
+                ) {
+                    alert(msg_tue);
+                    return false;
+                }
+            }
+            else if (mon_start2 > 0 && mon_start2 > 0 && mon_start === 0 && mon_end === 0) {
+                if ((mon_start2 > mon_end2 || mon_start2 === mon_end2)
+                ) {
+                    alert(msg_tue);
+                    return false;
+                }
+            }
+            else {
+                if(mon_start > 0 && mon_end ===0 )
+                {  
+                    alert("The  1st time schedule till "+ mon_end_time +" for Monday is not allowed, Please select ending session to 11:59 pm"); 
+                   
+                    return false;
+                }
+                if(mon_end > 0 && mon_start ===0)
+                { 
+                    alert("The 1st time schedule from "+ mon_start_time +" for Monday is not allowed, Please select starting session from 12:01 am"); 
+                    return false;
+                }
+                if(mon_start2 > 0 && mon_end2 ===0)
+                {  
+                    alert("The 2nd time schedule till "+ mon_end_time2 +" for Monday is not allowed,  Please select ending session to 11:59 pm"); 
+                   
+                    return false;
+                }
+                if(mon_end2 > 0 && mon_start2 ===0)
+                { 
+                     alert("The 2nd time schedule from "+ mon_start_time2 +" for Monday is not allowed, Please select starting session from 12:01 am"); 
+                    return false;
+                }
+            }
+        }
+
+        //=========================================================================end
+        //tue=========================================================================
+        let tue_start_time = document.getElementsByName('tue_start')[0].value;
+        let tue_end_time = document.getElementsByName('tue_end')[0].value;
+        let tue_start_time2 = document.getElementsByName('tue_start2')[0].value;
+        let tue_end_time2 = document.getElementsByName('tue_end2')[0].value;
+        let tue_start = 0;
+        let tue_end = 0;
+        let tue_start2 = 0;
+        let tue_end2 = 0;
+
+        if (tue_checked === true) {
+            if (
+                (
+                    (tue_start_time.length === 0 && tue_end_time.length === 0) || //1st
+                    (tue_start_time.length === 0 || tue_end_time.length === 0)
+                ) &&
+                ((tue_start_time2.length === 0 && tue_end_time2.length === 0) || //2nd
+                    (tue_start_time2.length === 0 || tue_end_time2.length === 0)
+                )
+            ) {
+                document.getElementById('msg_live').innerHTML = '* Select atleast one schedule for tuesday';
+                return false;
+            }
+        }
+        var msg_tue="The time schedule for Tuesday is incorrect. Please check and correct"; //
+
+        if (tue_checked === true && (
+            (tue_start_time.length > 0 && tue_end_time.length > 0) ||
+            (tue_start_time2.length > 0 && tue_end_time2.length > 0))
+        ) {
+            tue_start = this.time_convert_number(tue_start_time);
+            tue_end = this.time_convert_number(tue_end_time);
+            tue_start2 = this.time_convert_number(tue_start_time2);
+            tue_end2 = this.time_convert_number(tue_end_time2);
+            if (tue_start > 0 && tue_end > 0 && tue_start2 > 0 && tue_end2 > 0) {
+                if ((tue_start > tue_end || tue_start === tue_end)
+                    || (tue_start2 > tue_end2 || tue_start2 === tue_end2)
+                    || (tue_start2 === tue_start || tue_end === tue_end2)
+                ) {
+                    alert(msg_tue);
+                    return false;
+                }
+                let A = API.inRange(tue_start, tue_start2, tue_end2);
+                let B = API.inRange(tue_end, tue_start2, tue_end2);
+                let C = API.inRange(tue_start2, tue_start, tue_end);
+                let D = API.inRange(tue_end2, tue_start, tue_end);
+
+
+                if (A === true || B === true || C === true || D === true) {
+                    alert("same time range can't be allowed");
+                    return false;
+                }
+            }
+            else if (tue_start > 0 && tue_end > 0 && tue_start2 === 0 && tue_end2 === 0) {
+                if ((tue_start > tue_end || tue_start === tue_end)
+                ) {
+                    alert(msg_tue);
+                    return false;
+                }
+            }
+            else if (tue_start2 > 0 && tue_start2 > 0 && tue_start === 0 && tue_end === 0) {
+                if ((tue_start2 > tue_end2 || tue_start2 === tue_end2)
+                ) {
+                    alert(msg_tue);
+                    return false;
+                }
+            }
+            else {
+                if(tue_start > 0 && tue_end ===0 )
+                {                    
+                    alert("The  1st time schedule till "+ tue_end_time +" for Tuesday is not allowed, Please select ending session to 11:59 pm"); 
+                   
+                    return false;
+                }
+                if(tue_end > 0 && tue_start ===0)
+                { 
+                    alert("The 1st time schedule from "+ tue_start_time +" for Tuesday is not allowed, Please select starting session from 12:01 am"); 
+                  
+                    return false;
+                }
+                if(tue_start2 > 0 && tue_end2 ===0)
+                { 
+                    alert("The 2nd time schedule till "+ tue_end_time2 +" for Tuesday is not allowed,  Please select ending session to 11:59 pm"); 
+                   
+                    return false;
+                }
+                if(tue_end2 > 0 && tue_start2 ===0)
+                {  
+                    alert("The 2nd time schedule from "+ tue_start_time2 +" for Tuesday is not allowed, Please select starting session from 12:01 am"); 
+                    return false;
+                }
+            }
+
+
+        }
+
+
+        //============================================================================== end
+        //wed
+        let wed_start_time = document.getElementsByName('wed_start')[0].value;
+        let wed_end_time = document.getElementsByName('wed_end')[0].value;
+        let wed_start_time2 = document.getElementsByName('wed_start2')[0].value;
+        let wed_end_time2 = document.getElementsByName('wed_end2')[0].value;
+        let wed_start = 0;
+        let wed_end = 0;
+        let wed_start2 = 0;
+        let wed_end2 = 0;
+        if (wed_checked === true) {
+            if (
+                (
+                    (wed_start_time.length === 0 && wed_end_time.length === 0) || //1st
+                    (wed_start_time.length === 0 || wed_end_time.length === 0)
+                ) &&
+                ((wed_start_time2.length === 0 && wed_end_time2.length === 0) || //2nd
+                    (wed_start_time2.length === 0 || wed_end_time2.length === 0)
+                )
+            ) {
+                document.getElementById('msg_live').innerHTML = '* Select atleast one schedule for tuesday';
+                return false;
+            }
+        }
+
+        var msg_wed="The time schedule for Wednesday is incorrect. Please check and correct"; //
+
+
+        if (wed_checked === true && (
+            (wed_start_time.length > 0 && wed_end_time.length > 0) ||
+            (wed_start_time2.length > 0 && wed_end_time2.length > 0))
+        ) {
+            wed_start = this.time_convert_number(wed_start_time);
+            wed_end = this.time_convert_number(wed_end_time);
+            wed_start2 = this.time_convert_number(wed_start_time2);
+            wed_end2 = this.time_convert_number(wed_end_time2);
+
+
+             if(wed_start > -1 && wed_end > -1 && wed_start2 > -1 && wed_end2 > -1)
+            {
+                if((wed_start >= wed_end) 
+                    ||  (wed_start2 >= wed_end2)
+                    || (wed_start2 < wed_end) 
+                    || (wed_start===wed_start2 && wed_end===wed_end2)
+                )
+                {
+                    alert("The time schedule for Wednesday is incorrect. Please check and correct"); 
+                    return false;
+                }
+
+                // let A=API.inRange(wed_start,wed_start2,wed_end2);
+                // let B=API.inRange(wed_end,wed_start2,wed_end2);
+                // let C=API.inRange(wed_start2,wed_start,wed_end);
+                // let D=API.inRange(wed_end2,wed_start,wed_end);              
+
+                // if(A===true || B===true || C===true|| D===true)
+                // {
+                //     alert("same time range can't be allowed");
+                //     return false;
+                // }
+            }
+            else if(wed_start > -1 && wed_end > -1 && wed_start2 === -1 && wed_end2 === -1)
+            {
+                if((wed_start > wed_end || wed_start === wed_end)                
+                    )
+                {
+                    alert("The time schedule for Wednesday is incorrect. Please check and correct"); 
+                    return false;
+                }               
+            }
+            else if(wed_start2 > -1 && wed_start2 > -1 && wed_start === -1 && wed_end === -1)
+            {
+                if((wed_start2 > wed_end2 || wed_start2 === wed_end2)                
+                    )
+                {
+                    alert("The time schedule for Wednesday is incorrect. Please check and correct"); 
+                    return false;
+                }             
+            }
+            else
+            {
+                if(wed_start > 0 && wed_end ===0 )
+                {    
+                    
+                    alert("The  1st time schedule till "+ wed_end_time +" for Wednesday is not allowed, Please select ending session to 11:59 pm"); 
+                   
+                    return false;
+                }
+                if(wed_end > 0 && wed_start ===0)
+                {  
+                    alert("The 1st time schedule from "+ wed_start_time +" for Wednesday is not allowed, Please select starting session from 12:01 am"); 
+                  
+                    return false;
+                }
+                if(wed_start2 > 0 && wed_end2 ===0)
+                {   
+                    alert("The 2nd time schedule till "+ wed_end_time2 +" for Wednesday is not allowed,  Please select ending session to 11:59 pm"); 
+                  
+                    return false;
+                }
+                if(wed_end2 > 0 && wed_start2 ===0)
+                {  
+                    alert("The 2nd time schedule from "+wed_start_time2 +" for Wednesday is not allowed, Please select starting session from 12:01 am"); 
+                 
+                    return false;
+                }
+            }
+            
+
+        }
+
+
+        //thus
+
+        let thus_start_time = document.getElementsByName('thus_start')[0].value;
+        let thus_end_time = document.getElementsByName('thus_end')[0].value;
+        let thus_start_time2 = document.getElementsByName('thus_start2')[0].value;
+        let thus_end_time2 = document.getElementsByName('thus_end2')[0].value;
+        let thus_start = 0;
+        let thus_end = 0;
+        let thus_start2 = 0;
+        let thus_end2 = 0;
+        if (thus_checked === true) {
+            if (
+                (
+                    (thus_start_time.length === 0 && thus_end_time.length === 0) || //1st
+                    (thus_start_time.length === 0 || thus_end_time.length === 0)
+                ) &&
+                ((thus_start_time2.length === 0 && thus_end_time2.length === 0) || //2nd
+                    (thus_start_time2.length === 0 || thus_end_time2.length === 0)
+                )
+            ) {
+                document.getElementById('msg_live').innerHTML = '* Select atleast one schedule for thursday';
+                return false;
+            }
+        }
+        var msg_thus="The time schedule for Thursday is incorrect. Please check and correct"; //
+
+        if (thus_checked === true && (
+            (thus_start_time.length > 0 && thus_end_time.length > 0) ||
+            (thus_start_time2.length > 0 && thus_end_time2.length > 0))
+        ) {
+            thus_start = this.time_convert_number(thus_start_time);
+            thus_end = this.time_convert_number(thus_end_time);
+            thus_start2 = this.time_convert_number(thus_start_time2);
+            thus_end2 = this.time_convert_number(thus_end_time2);
+            if (thus_start > 0 && thus_end > 0 && thus_start2 > 0 && thus_end2 > 0) {
+                if ((thus_start > thus_end || thus_start === thus_end)
+                    || (thus_start2 > thus_end2 || thus_start2 === thus_end2)
+                    || (thus_start2 === thus_start || thus_end === thus_end2)
+                ) {
+                    alert(msg_thus);
+                    return false;
+                }
+                let A = API.inRange(thus_start, thus_start2, thus_end2);
+                let B = API.inRange(thus_end, thus_start2, thus_end2);
+                let C = API.inRange(thus_start2, thus_start, thus_end);
+                let D = API.inRange(thus_end2, thus_start, thus_end);
+
+
+                if (A === true || B === true || C === true || D === true) {
+                    alert("same time range can't be allowed");
+                    return false;
+                }
+            }
+            else if (thus_start > 0 && thus_end > 0 && thus_start2 === 0 && thus_end2 === 0) {
+                if ((thus_start > thus_end || thus_start === thus_end)
+                ) {
+                    alert(msg_thus);
+                    return false;
+                }
+            }
+            else if (thus_start2 > 0 && thus_start2 > 0 && thus_start === 0 && thus_end === 0) {
+                if ((thus_start2 > thus_end2 || thus_start2 === thus_end2)
+                ) {
+                    alert(msg_thus);
+                    return false;
+                }
+            }
+            else {
+                if(thus_start > 0 && thus_end ===0 )
+                {       
+                   
+                    alert("The  1st time schedule till "+ thus_end_time +" for Thursday is not allowed, Please select ending session to 11:59 pm"); 
+                   
+                    return false;
+                }
+                if(thus_end > 0 && thus_start ===0)
+                {    
+                    
+                    alert("The 1st time schedule from "+ thus_start_time +" for Thursday is not allowed, Please select starting session from 12:01 am"); 
+                  
+                    return false;
+                }
+                if(thus_start2 > 0 && thus_end2 ===0)
+                {     
+                    alert("The 2nd time schedule till "+ thus_end_time2 +" for Thursday is not allowed,  Please select ending session to 11:59 pm"); 
+                  
+                    return false;
+                }
+                if(thus_end2 > 0 && thus_start2 ===0)
+                {  
+                    alert("The 2nd time schedule from "+thus_start_time2 +" for Thursday is not allowed, Please select starting session from 12:01 am"); 
+                 
+                    return false;
+                }
+            }
+
+
+        }
+
+
+
+
+        //==========================================================================
+        //friday
+        let fry_start_time = document.getElementsByName('fry_start')[0].value;
+        let fry_end_time = document.getElementsByName('fry_end')[0].value;
+        let fry_start_time2 = document.getElementsByName('fry_start2')[0].value;
+        let fry_end_time2 = document.getElementsByName('fry_end2')[0].value;
+        let fry_start = 0;
+        let fry_end = 0;
+        let fry_start2 = 0;
+        let fry_end2 = 0;
+        if (fry_checked === true) {
+            if (
+                (
+                    (fry_start_time.length === 0 && fry_end_time.length === 0) || //1st
+                    (fry_start_time.length === 0 || fry_end_time.length === 0)
+                ) &&
+                ((fry_start_time2.length === 0 && fry_end_time2.length === 0) || //2nd
+                    (fry_start_time2.length === 0 || fry_end_time2.length === 0)
+                )
+            ) {
+                document.getElementById('msg_live').innerHTML = '* Select atleast one schedule for fryday';
+                return false;
+            }
+        }
+        var msg_fry="The time schedule for Friday is incorrect. Please check and correct"; //
+
+        if (fry_checked === true && (
+            (fry_start_time.length > 0 && fry_end_time.length > 0) ||
+            (fry_start_time2.length > 0 && fry_end_time2.length > 0))
+        ) {
+            fry_start = this.time_convert_number(fry_start_time);
+            fry_end = this.time_convert_number(fry_end_time);
+            fry_start2 = this.time_convert_number(fry_start_time2);
+            fry_end2 = this.time_convert_number(fry_end_time2);
+            if (fry_start > 0 && fry_end > 0 && fry_start2 > 0 && fry_end2 > 0) {
+                if ((fry_start > fry_end || fry_start === fry_end)
+                    || (fry_start2 > fry_end2 || fry_start2 === fry_end2)
+                    || (fry_start2 === fry_start || fry_end === fry_end2)
+                ) {
+                    alert(msg_fry);
+                    return false;
+                }
+                let A = API.inRange(fry_start, fry_start2, fry_end2);
+                let B = API.inRange(fry_end, fry_start2, fry_end2);
+                let C = API.inRange(fry_start2, fry_start, fry_end);
+                let D = API.inRange(fry_end2, fry_start, fry_end);
+
+
+                if (A === true || B === true || C === true || D === true) {
+                    alert("same time range can't be allowed");
+                    return false;
+                }
+            }
+            else if (fry_start > 0 && fry_end > 0 && fry_start2 === 0 && fry_end2 === 0) {
+                if ((fry_start > fry_end || fry_start === fry_end)
+                ) {
+                    alert(msg_fry);
+                    return false;
+                }
+            }
+            else if (fry_start2 > 0 && fry_start2 > 0 && fry_start === 0 && fry_end === 0) {
+                if ((fry_start2 > fry_end2 || fry_start2 === fry_end2)
+                ) {
+                    alert(msg_fry);
+                    return false;
+                }
+            }
+            else {
+                if(fry_start > 0 && fry_end ===0 )
+                {     
+                      alert("The  1st time schedule till "+ fry_end_time +" for Friday is not allowed, Please select ending session to 11:59 pm"); 
+                   
+                 
+                    return false;
+                }
+                if(fry_end > 0 && fry_start ===0)
+                {    
+                    alert("The 1st time schedule from "+ fry_start_time +" for Friday is not allowed, Please select starting session from 12:01 am"); 
+                  
+                    return false;
+                }
+                if(fry_start2 > 0 && fry_end2 ===0)
+                {   
+                    alert("The 2nd time schedule till "+ fry_end_time2 +" for Friday is not allowed,  Please select ending session to 11:59 pm"); 
+                  
+                    return false;
+                }
+                if(fry_end2 > 0 && fry_start2 ===0)
+                {  
+                    alert("The 2nd time schedule from "+fry_start_time2 +" for Friday is not allowed, Please select starting session from 12:01 am"); 
+                 
+                    return false;
+                }
+            }
+
+
+        }
+
+
+
+        //sat
+
+        let sat_start_time = document.getElementsByName('sat_start')[0].value;
+        let sat_end_time = document.getElementsByName('sat_end')[0].value;
+        let sat_start_time2 = document.getElementsByName('sat_start2')[0].value;
+        let sat_end_time2 = document.getElementsByName('sat_end2')[0].value;
+        let sat_start = 0;
+        let sat_end = 0;
+        let sat_start2 = 0;
+        let sat_end2 = 0;
+        if (sat_checked === true) {
+            if (
+                (
+                    (sat_start_time.length === 0 && sat_end_time.length === 0) || //1st
+                    (sat_start_time.length === 0 || sat_end_time.length === 0)
+                ) &&
+                ((sat_start_time2.length === 0 && sat_end_time2.length === 0) || //2nd
+                    (sat_start_time2.length === 0 || sat_end_time2.length === 0)
+                )
+            ) {
+                document.getElementById('msg_live').innerHTML = '* Select atleast one schedule for saturday';
+                return false;
+            }
+        }
+        var msg_sat="The time schedule for Saturday is incorrect. Please check and correct"; //
+
+        if (sat_checked === true && (
+            (sat_start_time.length > 0 && sat_end_time.length > 0) ||
+            (sat_start_time2.length > 0 && sat_end_time2.length > 0))
+        ) {
+            sat_start = this.time_convert_number(sat_start_time);
+            sat_end = this.time_convert_number(sat_end_time);
+            sat_start2 = this.time_convert_number(sat_start_time2);
+            sat_end2 = this.time_convert_number(sat_end_time2);
+            if (sat_start > 0 && sat_end > 0 && sat_start2 > 0 && sat_end2 > 0) {
+                if ((sat_start > sat_end || sat_start === sat_end)
+                    || (sat_start2 > sat_end2 || sat_start2 === sat_end2)
+                    || (sat_start2 === sat_start || sat_end === sat_end2)
+                ) {
+                    alert(msg_sat);
+                    return false;
+                }
+                let A = API.inRange(sat_start, sat_start2, sat_end2);
+                let B = API.inRange(sat_end, sat_start2, sat_end2);
+                let C = API.inRange(sat_start2, sat_start, sat_end);
+                let D = API.inRange(sat_end2, sat_start, sat_end);
+
+
+                if (A === true || B === true || C === true || D === true) {
+                    alert("same time range can't be allowed");
+                    return false;
+                }
+            }
+            else if (sat_start > 0 && sat_end > 0 && sat_start2 === 0 && sat_end2 === 0) {
+                if ((sat_start > sat_end || sat_start === sat_end)
+                ) {
+                    alert(msg_sat);
+                    return false;
+                }
+            }
+            else if (sat_start2 > 0 && sat_start2 > 0 && sat_start === 0 && sat_end === 0) {
+                if ((sat_start2 > sat_end2 || sat_start2 === sat_end2)
+                ) {
+                    alert(msg_sat);
+                    return false;
+                }
+            }
+            else {
+                if(sat_start > 0 && sat_end ===0 )
+                {      
+                   alert("The  1st time schedule till "+ sat_end_time +" for Saturday is not allowed, Please select ending session to 11:59 pm"); 
+                   
+                    return false;
+                }
+                if(sat_end > 0 && sat_start ===0)
+                {     
+                    alert("The 1st time schedule from "+ sat_start_time +" for Saturday is not allowed, Please select starting session from 12:01 am"); 
+                  
+                    return false;
+                }
+                if(sat_start2 > 0 && sat_end2 ===0)
+                {       
+                    alert("The 2nd time schedule till "+ sat_end_time2 +" for Saturday is not allowed,  Please select ending session to 11:59 pm"); 
+                  
+                    return false;
+                }
+                if(sat_end2 > 0 && sat_start2 ===0)
+                {  
+                    alert("The 2nd time schedule from "+sat_start_time2 +" for Saturday is not allowed, Please select starting session from 12:01 am"); 
+                 
+                    return false;
+                }
+            }
+
+
+        }
+
+
+
+        //sun
+
+
+
+        let sun_start_time = document.getElementsByName('sun_start')[0].value;
+        let sun_end_time = document.getElementsByName('sun_end')[0].value;
+        let sun_start_time2 = document.getElementsByName('sun_start2')[0].value;
+        let sun_end_time2 = document.getElementsByName('sun_end2')[0].value;
+        let sun_start = 0;
+        let sun_end = 0;
+        let sun_start2 = 0;
+        let sun_end2 = 0;
+
+        if (sun_checked === true) {
+            if (
+                (
+                    (sun_start_time.length === 0 && sun_end_time.length === 0) || //1st
+                    (sun_start_time.length === 0 || sun_end_time.length === 0)
+                ) &&
+                ((sun_start_time2.length === 0 && sun_end_time2.length === 0) || //2nd
+                    (sun_start_time2.length === 0 || sun_end_time2.length === 0)
+                )
+            ) {
+                document.getElementById('msg_live').innerHTML = '* Select atleast one schedule for sunday';
+                return false;
+            }
+        }
+
+        var msg_sun="The time schedule for Sunday is incorrect. Please check and correct"; //
+        if (sun_checked === true && (
+            (sun_start_time.length > 0 && sun_end_time.length > 0) ||
+            (sun_start_time2.length > 0 && sun_end_time2.length > 0))
+        ) {
+            sun_start = this.time_convert_number(sun_start_time);
+            sun_end = this.time_convert_number(sun_end_time);
+            sun_start2 = this.time_convert_number(sun_start_time2);
+            sun_end2 = this.time_convert_number(sun_end_time2);
+            if (sun_start > 0 && sun_end > 0 && sun_start2 > 0 && sun_end2 > 0) {
+                if ((sun_start > sun_end || sun_start === sun_end)
+                    || (sun_start2 > sun_end2 || sun_start2 === sun_end2)
+                    || (sun_start2 === sun_start || sun_end === sun_end2)
+                ) {
+                    alert(msg_sun); 
+                    return false;
+                }
+                let A = API.inRange(sun_start, sun_start2, sun_end2);
+                let B = API.inRange(sun_end, sun_start2, sun_end2);
+                let C = API.inRange(sun_start2, sun_start, sun_end);
+                let D = API.inRange(sun_end2, sun_start, sun_end);
+
+       
+                if (A === true || B === true || C === true || D === true) {
+                    alert("same time range can't be allowed");
+                    return false;
+                }
+            }           
+            else if (sun_start > 0 && sun_end > 0 && sun_start2 === 0 && sun_end2 === 0) {
+                if ((sun_start > sun_end || sun_start === sun_end)
+                ) {
+                    alert(msg_sun); 
+                    return false;
+                }
+            }
+            else if (sun_start2 > 0 && sun_start2 > 0 && sun_start === 0 && sun_end === 0) {
+                if ((sun_start2 > sun_end2 || sun_start2 === sun_end2)
+                ) {
+                    alert(msg_sun); 
+                    return false;
+                }
+            }
+            else {
+                if(sun_start > 0 && sun_end ===0 )
+                {  
+                    alert("The  1st time schedule till "+ sun_end_time +" for Sunday is not allowed, Please select ending session to 11:59 pm"); 
+                 
+                    return false;
+                }
+                if(sun_end > 0 && sun_start ===0)
+                {    
+                    alert("The 1st time schedule from "+ sun_start_time +" for Sunday is not allowed, Please select starting session from 12:01 am"); 
+                  
+                    return false;
+                }
+                if(sun_start2 > 0 && sun_end2 ===0)
+                {    
+                    alert("The 2nd time schedule till "+ sun_end_time2 +" for Sunday is not allowed,  Please select ending session to 11:59 pm"); 
+                  
+                    return false;
+                }
+                if(sun_end2 > 0 && sun_start2 ===0)
+                {  
+                    alert("The time schedule from "+sun_start_time2 +" for Sunday is not allowed, Please select starting session from 12:01 am"); 
+                 
+                    return false;
+                }
+            }
+
+
+        }

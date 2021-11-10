@@ -1,0 +1,75 @@
+Select Y.Stat_day Lebels,IFNULL(Z.Stat_ID,0) Stat_ID,IFNULL(Z.JM_ID,0) JM_ID,IFNULL(Z.TotClicks,0) TotClicks,IFNULL(Z.Title,'NA') Title,Y.Create_Date  
+ from ( 
+       Select DAYNAME(CURDATE() - INTERVAL 6 DAY) Stat_day,(CURDATE() - INTERVAL 6 DAY) Create_Date 
+    union   
+  Select DAYNAME(CURDATE() - INTERVAL 5 DAY) Stat_day,(CURDATE() - INTERVAL 5 DAY) Create_Date  
+   union    Select DAYNAME(CURDATE() - INTERVAL 4 DAY) Stat_day,(CURDATE() - INTERVAL 4 DAY) Create_Date    
+ union      Select DAYNAME(CURDATE() - INTERVAL 3 DAY) Stat_day,(CURDATE() - INTERVAL 3 DAY) Create_Date 
+ union   Select DAYNAME(CURDATE() - INTERVAL 2 DAY) Stat_day,(CURDATE() - INTERVAL 2 DAY) Create_Date  
+union    Select DAYNAME(CURDATE() - INTERVAL 1 DAY) Stat_day,(CURDATE() - INTERVAL 1 DAY) Create_Date  
+union     Select DAYNAME(CURDATE()) Stat_day,CURDATE()  Create_Date 
+ ) Y  
+  left outer join( 
+      SELECT Stat_ID,SUM(Stat_Click) TotClicks,DAYNAME(Create_Date) Stat_day,Date(Create_Date) Create_Date, JM_ID,
+      CASE  WHEN Stat_Type='L'  THEN (SELECT LM_Title from link_master where 	LM_ID=Stat_ID)  
+        WHEN Stat_Type='S'  THEN (SELECT SWM_Title from social_widget_master where SWM_ID=Stat_ID) 
+          WHEN Stat_Type='C'  THEN (SELECT category_master.CM_Folder_Title from category_master where CM_ID=Stat_ID)
+            WHEN Stat_Type='P'  THEN (SELECT DA_Title from direct_access_master_user where DA_ID=Stat_ID)  else '' end as Title 
+            FROM    stat_master  where JM_ID="+req.body.JM_ID+" and Create_Date>=DATE(NOW()) - INTERVAL 7 DAY  GROUP By Date(Create_Date),JM_ID 
+ )   Z on Z.Create_Date=Y.Create_Date Order by Y.Create_Date; 
+ 
+
+
+
+ SELECT * from (
+      SELECT Stat_ID,Stat_Type,SUM(Stat_Click) TotClicks,DAYNAME(Create_Date) Stat_day,Create_Date, JM_ID,
+ CASE  WHEN Stat_Type='L'  THEN (SELECT LM_Title from link_master where LM_ID=Stat_ID) 
+  WHEN Stat_Type='S'   THEN (SELECT SWM_Title from social_widget_master where SWM_ID=Stat_ID)   
+   WHEN Stat_Type='C'  THEN (SELECT category_master.CM_Folder_Title from category_master where CM_ID=Stat_ID)  
+     WHEN Stat_Type='P'  THEN (SELECT DA_Title from direct_access_master_user where DA_ID=Stat_ID)  else 'NA' end as Title 
+     FROM    stat_master   where JM_ID="+req.body.JM_ID+" and Create_Date>=DATE(NOW()) - INTERVAL 7 DAY GROUP By Stat_ID 
+) M where M.Title!='NA'; 
+
+
+
+
+SELECT JM_ID,Count(*) totViews FROM view_master where JM_ID="+req.body.JM_ID+" and Create_Date>=DATE(NOW()) - INTERVAL 7 DAY  GROUP by JM_ID;
+
+
+SELECT Y.Stat_day Lebels,IFNULL(Z.VM_ID,0) VM_ID,IFNULL(Z.JM_ID,0) JM_ID,IFNULL(Z.TotalViews,0) TotalViews,Y.Create_Date  from ( 
+     Select DAYNAME(CURDATE() - INTERVAL 6 DAY) Stat_day, (CURDATE() - INTERVAL 6 DAY) Create_Date  
+     union   Select DAYNAME(CURDATE() - INTERVAL 5 DAY) Stat_day,(CURDATE() - INTERVAL 5 DAY) Create_Date  
+     union   Select DAYNAME(CURDATE() - INTERVAL 4 DAY) Stat_day,(CURDATE() - INTERVAL 4 DAY) Create_Date   
+     union Select DAYNAME(CURDATE() - INTERVAL 3 DAY) Stat_day,(CURDATE() - INTERVAL 3 DAY) Create_Date  
+    union Select DAYNAME(CURDATE() - INTERVAL 2 DAY) Stat_day,(CURDATE() - INTERVAL 2 DAY) Create_Date     
+    union      Select DAYNAME(CURDATE() - INTERVAL 1 DAY) Stat_day,(CURDATE() - INTERVAL 1 DAY) Create_Date 
+    union    Select DAYNAME(CURDATE()) Stat_day,CURDATE()  Create_Date 
+ ) Y 
+ left join (
+     SELECT VM_ID,JM_ID,SUM(JM_Views) TotalViews,DAYNAME(Create_Date) Stat_day,
+     DATE(Create_Date) Create_Date FROM view_master where JM_ID="+req.body.JM_ID+" 
+     and Create_Date >=CURDATE() - INTERVAL 7 DAY GROUP BY DATE(Create_Date)  
+) Z on DATE(Z.Create_Date)=Y.Create_Date Order by Y.Create_Date;
+
+
+
+ SELECT COUNT(X.cnt) totalPeopleVisited  from ( 
+      SELECT COUNT(*) cnt,JM_ID,JM_Profile_Url,JM_Views,IP FROM view_master where Create_Date >= DATE_SUB(NOW(),INTERVAL 30 minute) and JM_ID="+req.body.JM_ID+" group by JM_ID,IP 
+ ) X; 
+ 
+ 
+ SELECT da.JM_ID,da.DA_Price,jm.JM_Name,da.DA_ID,da.JM_ID,da.DA_Title, DATE(bm.BM_Purchase_Date) BM_Purchase_Date,
+ COUNT(*) purchases,SUM(bm.BM_Purchase_Amt) BM_Purchase_Amt,SUM(bm.Revenue) Revenue 
+ FROM buyers_master bm 
+ inner join direct_access_master_user da on da.DA_ID=bm.DA_ID 
+ inner join joining_master jm on jm.JM_ID=da.JM_ID where da.JM_ID="+req.body.JM_ID+" 
+ and DATE(bm.BM_Purchase_Date) >= CURDATE() - INTERVAL 6 DAY GROUP BY DA_ID;
+ 
+ 
+ 
+ Select Y.Stat_day Lebels,IFNULL(Z.Stat_ID,0) Stat_ID,IFNULL(Z.JM_ID,0) JM_ID,IFNULL(Z.TotTran,0) TotTran,IFNULL(Z.Title,'NA') Title,Y.Create_Date   from (   Select DAYNAME(CURDATE() - INTERVAL 6 DAY) Stat_day,(CURDATE() - INTERVAL 6 DAY) Create_Date                 union    Select DAYNAME(CURDATE() - INTERVAL 5 DAY) Stat_day,(CURDATE() - INTERVAL 5 DAY) Create_Date                  union    Select DAYNAME(CURDATE() - INTERVAL 4 DAY) Stat_day,(CURDATE() - INTERVAL 4 DAY) Create_Date                 union    Select DAYNAME(CURDATE() - INTERVAL 3 DAY) Stat_day,(CURDATE() - INTERVAL 3 DAY) Create_Date                  union    Select DAYNAME(CURDATE() - INTERVAL 2 DAY) Stat_day,(CURDATE() - INTERVAL 2 DAY) Create_Date                    union    Select DAYNAME(CURDATE() - INTERVAL 1 DAY) Stat_day,(CURDATE() - INTERVAL 1 DAY) Create_Date                        union    Select DAYNAME(CURDATE()) Stat_day,CURDATE()  Create_Date           ) Y  left outer join(                    Select  m.Stat_ID,SUM(m.TotTran) TotTran,                        m.Stat_day,m.Create_Date, m.JM_ID,                        m.Title from (                         SELECT bm.DA_ID Stat_ID,COUNT(*) TotTran,                        DAYNAME(bm.BM_Purchase_Date) Stat_day,DATE(bm.BM_Purchase_Date) as  Create_Date, jm.JM_ID,                        'Transaction' Title FROM buyers_master bm                            inner join direct_access_master_user da on da.DA_ID=bm.DA_ID                         inner join joining_master jm on jm.JM_ID=da.JM_ID                         where jm.JM_ID="+req.body.JM_ID+" and DATE(bm.BM_Purchase_Date) >= CURDATE() - INTERVAL 7 DAY                        group by DATE(bm.BM_Purchase_Date),bm.DA_ID                     ) as m  group by m.Create_Date          ) Z on Z.Create_Date=Y.Create_Date Order by Y.Create_Date
+
+
+
+//monitization latest
+Select A.Stat_ID,A.BM_Purchase_Amt,A.TotTran,A.totalPurchases,A.Create_Date,A.JM_ID,A.Title,IFNULL(B.TotClicks,0) TotClicks,A.DA_Price,A.revenue from (  		SELECT bm.DA_ID Stat_ID,bm.BM_Purchase_Amt,COUNT(*) TotTran,da.DA_Price,   		SUM(IFNULL(bm.BM_Purchase_Amt,0)) totalPurchases,      	SUM(IFNULL(bm.BM_Purchase_Amt,0)) * (IFNULL(cm.CM_Creator_Get,0) / IFNULL(cm.CM_Chrages_Per,0)) as revenue,        DAYNAME(bm.BM_Purchase_Date) Stat_day,DATE(bm.BM_Purchase_Date) as  Create_Date, jm.JM_ID,                   da.DA_Title Title FROM buyers_master bm CROSS JOIN charges_master cm                               inner join direct_access_master_user da on da.DA_ID=bm.DA_ID                inner join joining_master jm on jm.JM_ID=da.JM_ID                 where jm.JM_ID="+req.body.JM_ID+"   and DATE(bm.BM_Purchase_Date) >= CURDATE() - INTERVAL 365 DAY         GROUP BY Stat_ID  ) A  left join (         SELECT Stat_ID,Stat_Type,SUM(Stat_Click) TotClicks,DAYNAME(Create_Date) Stat_day,Create_Date, JM_ID,  	 CASE WHEN Stat_Type='L'  THEN (SELECT LM_Title from link_master where LM_ID=Stat_ID)   	 WHEN Stat_Type='S'   THEN (SELECT SWM_Title from social_widget_master where SWM_ID=Stat_ID)     	 WHEN Stat_Type='C'  THEN (SELECT category_master.CM_Folder_Title from category_master where CM_ID=Stat_ID)       WHEN Stat_Type='P'  THEN (SELECT DA_Title from direct_access_master_user where DA_ID=Stat_ID)  else 'NA' end as Title      FROM stat_master   where JM_ID="+req.body.JM_ID+"   and Create_Date >=DATE(NOW()) - INTERVAL 365 DAY GROUP By Stat_ID         ) B on B.Stat_ID=A.Stat_ID 
