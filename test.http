@@ -2,7 +2,7 @@ POST https://velectico.net.in/admin/forgotPassword HTTP/1.1
 Content-Type: application/json
 
 {
-    "flag":"sdfsfsf"
+    "flag":"sdfsfjsf"
 
 } 
 ###
